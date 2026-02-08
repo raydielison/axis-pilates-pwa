@@ -1,0 +1,93 @@
+diff
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Studio de Pilates Axis</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+
+  <style>
+    body { font-family: Arial; background: #f5f5f5; }
+    .box {
+      max-width: 400px; margin: 80px auto;
+      background: #fff; padding: 20px;
+      border-radius: 8px;
+    }
+    input, button {
+      width: 100%; padding: 10px;
+      margin: 8px 0;
+    }
+    button { background: #0b6f6b; color: #fff; border: none; }
+    .hidden { display: none; }
+  </style>
+</head>
+
+<body>
+
+<div class="box" id="login">
+  <h2>Login</h2>
+  <input id="email" type="email" placeholder="Email">
+  <input id="senha" type="password" placeholder="Senha">
+  <button onclick="login()">Entrar</button>
+  <button onclick="cadastro()">Criar conta</button>
+</div>
+
+<div class="box hidden" id="app">
+  <h2 id="user"></h2>
+  <p>App Studio de Pilates Axis</p>
+  <button onclick="logout()">Sair</button>
+
+  <div id="admin" class="hidden">
+    <hr>
+    <strong>Área Administrador</strong>
+  </div>
+</div>
+
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyBBH9hTytHGsYctpQtAFvISB5EgXln39f8",
+    authDomain: "studio-pilates-axis.firebaseapp.com",
+    projectId: "studio-pilates-axis",
+    appId: "1:43458837871:web:ed8ddb7a5110d4f7043c9a"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+
+  function login() {
+    auth.signInWithEmailAndPassword(email.value, senha.value)
+      .catch(e => alert(e.message));
+  }
+
+  function cadastro() {
+    auth.createUserWithEmailAndPassword(email.value, senha.value)
+      .catch(e => alert(e.message));
+  }
+
+  function logout() {
+    auth.signOut();
+  }
+
+  auth.onAuthStateChanged(u => {
+    if (u) {
+      login.classList.add("hidden");
+      app.classList.remove("hidden");
+      user.innerText = u.email;
+
+      if (u.email === "studiodepilatesaxis@gmail.com") {
+        admin.classList.remove("hidden");
+      }
+    } else {
+      login.classList.remove("hidden");
+      app.classList.add("hidden");
+      admin.classList.add("hidden");
+    }
+  });
+</script>
+
+</body>
+</html>
+
