@@ -1,4 +1,3 @@
-index.html
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -6,28 +5,43 @@ index.html
   <title>Studio de Pilates Axis</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
+  <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 
   <style>
-    body { font-family: Arial; background: #f5f5f5; }
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+    }
     .box {
-      max-width: 400px; margin: 80px auto;
-      background: #fff; padding: 20px;
+      max-width: 400px;
+      margin: 80px auto;
+      background: #fff;
+      padding: 20px;
       border-radius: 8px;
     }
     input, button {
-      width: 100%; padding: 10px;
+      width: 100%;
+      padding: 10px;
       margin: 8px 0;
     }
-    button { background: #0b6f6b; color: #fff; border: none; }
-    .hidden { display: none; }
+    button {
+      background: #0b6f6b;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+    }
+    .hidden {
+      display: none;
+    }
   </style>
 </head>
 
 <body>
 
-<div class="box" id="login">
+<!-- LOGIN -->
+<div class="box" id="loginBox">
   <h2>Login</h2>
   <input id="email" type="email" placeholder="Email">
   <input id="senha" type="password" placeholder="Senha">
@@ -35,18 +49,22 @@ index.html
   <button onclick="cadastro()">Criar conta</button>
 </div>
 
+<!-- APP -->
 <div class="box hidden" id="app">
   <h2 id="user"></h2>
   <p>App Studio de Pilates Axis</p>
   <button onclick="logout()">Sair</button>
 
+  <!-- ADMIN -->
   <div id="admin" class="hidden">
     <hr>
     <strong>Área Administrador</strong>
+    <p>Aqui você poderá gerenciar alunos e aulas.</p>
   </div>
 </div>
 
 <script>
+  // Configuração Firebase
   const firebaseConfig = {
     apiKey: "AIzaSyBBH9hTytHGsYctpQtAFvISB5EgXln39f8",
     authDomain: "studio-pilates-axis.firebaseapp.com",
@@ -54,26 +72,35 @@ index.html
     appId: "1:43458837871:web:ed8ddb7a5110d4f7043c9a"
   };
 
+  // Inicializar Firebase
   firebase.initializeApp(firebaseConfig);
   const auth = firebase.auth();
 
+  // Login
   function login() {
-    auth.signInWithEmailAndPassword(email.value, senha.value)
-      .catch(e => alert(e.message));
+    auth.signInWithEmailAndPassword(
+      email.value,
+      senha.value
+    ).catch(e => alert(e.message));
   }
 
+  // Cadastro
   function cadastro() {
-    auth.createUserWithEmailAndPassword(email.value, senha.value)
-      .catch(e => alert(e.message));
+    auth.createUserWithEmailAndPassword(
+      email.value,
+      senha.value
+    ).catch(e => alert(e.message));
   }
 
+  // Logout
   function logout() {
     auth.signOut();
   }
 
+  // Controle de sessão
   auth.onAuthStateChanged(u => {
     if (u) {
-      login.classList.add("hidden");
+      loginBox.classList.add("hidden");
       app.classList.remove("hidden");
       user.innerText = u.email;
 
@@ -81,7 +108,7 @@ index.html
         admin.classList.remove("hidden");
       }
     } else {
-      login.classList.remove("hidden");
+      loginBox.classList.remove("hidden");
       app.classList.add("hidden");
       admin.classList.add("hidden");
     }
@@ -90,4 +117,3 @@ index.html
 
 </body>
 </html>
-
