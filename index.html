@@ -4,60 +4,432 @@
   <meta charset="UTF-8">
   <title>Studio de Pilates Axis</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#763000">
+  <meta name="description" content="Studio de Pilates Axis - saúde, mobilidade e qualidade de vida em Rio Branco/AC.">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Axis Pilates">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/svg+xml" href="icons/axis-logo.svg">
+  <link rel="apple-touch-icon" href="icons/axis-logo.svg">
 
   <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 
   <style>
+    :root {
+      --bg: #f1eae5;
+      --surface: #ffffff;
+      --primary: #763000;
+      --primary-2: #a35a2a;
+      --text: #2f241f;
+      --muted: #6a5a52;
+      --border: #e3d6cd;
+      --soft-surface: #faf5f1;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
     body {
+      margin: 0;
       font-family: Arial, sans-serif;
-      background: #f5f5f5;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
     }
+
+    header {
+      background: linear-gradient(120deg, var(--primary), #a35a2a);
+      color: #fff;
+      padding: 18px 16px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .nav {
+      max-width: 980px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      font-weight: 700;
+      font-size: 1.05rem;
+      letter-spacing: 0.2px;
+    }
+
+    .menu {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .menu a {
+      color: #f6f9f8;
+      text-decoration: none;
+      font-size: 0.92rem;
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 999px;
+      padding: 6px 12px;
+    }
+
+    main {
+      max-width: 980px;
+      margin: 20px auto 48px;
+      padding: 0 16px;
+    }
+
+    .hero, .section, .box, #installBox {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+
+    .hero {
+      padding: 24px;
+      margin-bottom: 16px;
+    }
+
+    .hero h1 {
+      margin: 0 0 10px;
+      font-size: 1.7rem;
+      color: #5b2f14;
+    }
+
+    .hero p { margin: 8px 0; color: var(--muted); }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+    }
+
+    .card {
+      background: var(--soft-surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px;
+    }
+
+    .section {
+      margin-top: 14px;
+      padding: 18px;
+    }
+
+    .section h2 {
+      margin-top: 0;
+      color: #763000;
+      font-size: 1.2rem;
+    }
+
     .box {
-      max-width: 400px;
-      margin: 80px auto;
-      background: #fff;
-      padding: 20px;
-      border-radius: 8px;
+      max-width: 480px;
+      margin: 16px auto 0;
+      padding: 18px;
     }
+
+    .auth-gate {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 16px;
+    }
+
+    .auth-box {
+      width: 100%;
+      max-width: 460px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+      padding: 20px;
+      text-align: center;
+    }
+
+    .auth-box h1 {
+      margin: 0 0 8px;
+      font-size: 1.4rem;
+      color: #5b2f14;
+    }
+
+    .auth-logo {
+      display: block;
+      width: 150px;
+      height: auto;
+      margin: 0 auto 12px;
+    }
+
+    .auth-box p {
+      margin: 0 auto 14px;
+      color: var(--muted);
+      max-width: 360px;
+    }
+
     input, button {
       width: 100%;
       padding: 10px;
       margin: 8px 0;
       font-size: 16px;
+      border-radius: 8px;
     }
+
+    input {
+      border: 1px solid #d8c7bb;
+    }
+
     button {
-      background: #0b6f6b;
+      background: var(--primary);
       color: #fff;
       border: none;
       cursor: pointer;
+      font-weight: 600;
     }
-    .hidden {
-      display: none;
+
+    button.secondary {
+      background: var(--primary-2);
+    }
+
+    .hidden { display: none; }
+
+    #installBox {
+      margin: 10px auto 14px;
+      padding: 10px 12px;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    #installBox span {
+      color: #6c3f23;
+      font-size: 0.95rem;
+    }
+
+    #btnInstall {
+      width: auto;
+      margin: 0;
+      padding: 8px 12px;
+      font-size: 14px;
+    }
+
+    .contact-list {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--muted);
+    }
+
+    .map-link {
+      display: inline-block;
+      margin-top: 10px;
+      background: var(--primary);
+      color: #fff;
+      text-decoration: none;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-weight: 600;
+    }
+
+    .admin-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .admin-card {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px;
+      background: var(--soft-surface);
+    }
+
+    .admin-card h4 {
+      margin: 0 0 6px;
+      color: #763000;
+    }
+
+    .tiny {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin: 0 0 8px;
+    }
+
+    .danger-btn {
+      background: #9b2d2d;
+      margin-top: 6px;
+    }
+
+    .user-list {
+      list-style: none;
+      margin: 8px 0 0;
+      padding: 0;
+    }
+
+    .user-list li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 0;
+      border-bottom: 1px dashed #d8c7bb;
+      font-size: 0.9rem;
+    }
+
+    footer {
+      margin-top: 24px;
+      text-align: center;
+      color: #8a6f60;
+      font-size: 0.9rem;
     }
   </style>
 </head>
-
 <body>
-
-<div class="box" id="loginBox">
-  <h2>Login</h2>
-  <input id="email" type="email" placeholder="Email">
-  <input id="senha" type="password" placeholder="Senha">
-  <button id="btnLogin">Entrar</button>
-  <button id="btnCadastro">Criar conta</button>
-</div>
-
-<div class="box hidden" id="appBox">
-  <h2 id="userEmail"></h2>
-  <p>App Studio de Pilates Axis</p>
-  <button id="btnLogout">Sair</button>
-
-  <div id="adminBox" class="hidden">
-    <hr>
-    <strong>Área Administrador</strong>
+<section id="authGate" class="auth-gate">
+  <div class="auth-box">
+    <img class="auth-logo" src="icons/axis-logo.svg" alt="Logomarca Studio Axis">
+    <h1>Studio de Pilates Axis</h1>
+    <p>Faça login para acessar todas as abas, botões e funcionalidades do aplicativo.</p>
+    <input id="email" type="email" placeholder="Email">
+    <input id="senha" type="password" placeholder="Senha">
+    <button id="btnLogin">Entrar</button>
+    <button id="btnCadastro" class="secondary">Criar conta</button>
   </div>
+</section>
+
+<div id="appContent" class="hidden">
+<header>
+  <div class="nav">
+    <div class="brand">Studio de Pilates Axis</div>
+    <nav class="menu" aria-label="Navegação principal">
+      <a href="#inicio">Início</a>
+      <a href="#servicos">Serviços</a>
+      <a href="#planos">Planos</a>
+      <a href="#horarios">Horários</a>
+      <a href="#localizacao">Localização</a>
+      <a href="#contato">Contato</a>
+      <a href="#area-cliente">Área do cliente</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section id="inicio" class="hero">
+    <h1 id="heroTitle">O centro do seu movimento.</h1>
+    <p>
+      <span id="heroDescription">Movimento consciente, cuidado personalizado. Nosso estúdio é um espaço acolhedor, pensado para seu bem-estar, equilíbrio e atendimento totalmente personalizado.</span>
+    </p>
+    <div class="grid">
+      <article class="card"><strong>Ambiente acolhedor</strong><br>Você se sente confortável e seguro desde a primeira visita.</article>
+      <article class="card"><strong>Equipe especializada</strong><br>Profissionais com foco em técnica, prevenção e resultado.</article>
+      <article class="card"><strong>Atendimento personalizado</strong><br>Cada aluno recebe atenção individual para sua necessidade.</article>
+    </div>
+  </section>
+
+  <div id="installBox" class="hidden">
+    <span>Instale o app Axis no seu dispositivo para acesso rápido.</span>
+    <button id="btnInstall">Instalar</button>
+  </div>
+
+  <section id="servicos" class="section">
+    <h2>Serviços</h2>
+    <div class="grid">
+      <article class="card"><strong>Pilates</strong><br>Aulas com foco em mobilidade, postura e fortalecimento.</article>
+      <article class="card"><strong>Fisioterapia</strong><br>Atendimento com agendamento prévio e plano terapêutico.</article>
+      <article class="card"><strong>Massoterapia</strong><br>Sessão de 50 minutos com agendamento prévio.</article>
+    </div>
+  </section>
+
+  <section id="planos" class="section">
+    <h2>Planos</h2>
+    <div class="grid">
+      <article class="card"><strong>2x por semana</strong><br>Mensalidade: R$280,00<br>Segunda a sexta, 07h às 21h.</article>
+      <article class="card"><strong>3x por semana</strong><br>Mensalidade: R$320,00<br>Segunda a sexta, 07h às 21h.</article>
+      <article class="card"><strong>Massoterapia</strong><br>R$150,00 por sessão (50 min).<br>Fisioterapia: consulte valores.</article>
+    </div>
+  </section>
+
+  <section id="horarios" class="section">
+    <h2>Horários de atendimento</h2>
+    <p style="margin:0;color:var(--muted);">Segunda a sexta: 07h às 21h</p>
+  </section>
+
+
+  <section id="localizacao" class="section">
+    <h2>Localização</h2>
+    <p style="margin:0;color:var(--muted);">
+      Rua Ponte Nova, 354, sala 202, Colégio Batista, Belo Horizonte - MG
+    </p>
+    <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=Rua+Ponte+Nova,+354,+sala+202,+Col%C3%A9gio+Batista,+Belo+Horizonte,+MG" target="_blank" rel="noopener noreferrer">
+      Abrir no app de navegação
+    </a>
+  </section>
+
+  <section id="contato" class="section">
+    <h2>Contato</h2>
+    <ul class="contact-list">
+      <li>Rua Ponte Nova, 354, sala 202, Colégio Batista, Belo Horizonte - MG</li>
+      <li>Agende uma aula experimental pelo WhatsApp</li>
+      <li>Email: studiodepilatesaxis@gmail.com</li>
+      <li id="contactWhatsapp">WhatsApp: (31) 98845-4857</li>
+    </ul>
+  </section>
+
+  <section id="area-cliente" class="section">
+    <h2>Área do cliente</h2>
+    <p style="margin-top:0;color:var(--muted);">Sessão autenticada ativa.</p>
+
+    <div class="box hidden" id="appBox">
+      <h3 id="userEmail"></h3>
+      <p>App Studio de Pilates Axis</p>
+      <button id="btnLogout">Sair</button>
+
+      <div id="adminBox" class="hidden">
+        <hr>
+        <strong>Área Administrador Geral</strong>
+        <p class="tiny">Admin principal: studiodepilatesaxis@gmail.com</p>
+
+        <div class="admin-grid">
+          <div class="admin-card">
+            <h4>Criar login</h4>
+            <input id="newUserEmail" type="email" placeholder="Novo email">
+            <input id="newUserPassword" type="password" placeholder="Senha provisória">
+            <button id="btnCreateUser">Criar login</button>
+          </div>
+
+          <div class="admin-card">
+            <h4>Cadastros criados</h4>
+            <p class="tiny">Exclusão disponível para logins criados por este painel.</p>
+            <ul id="userList" class="user-list"></ul>
+          </div>
+
+          <div class="admin-card">
+            <h4>Informações do aplicativo</h4>
+            <input id="appTitleInput" type="text" placeholder="Título principal">
+            <input id="appDescInput" type="text" placeholder="Descrição curta">
+            <input id="appWhatsappInput" type="text" placeholder="WhatsApp (formato texto)">
+            <button id="btnSaveAppInfo">Salvar alterações</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    © Studio de Pilates Axis · Pilates, Fisioterapia e Massoterapia
+  </footer>
+</main>
 </div>
 
 <script>
@@ -71,43 +443,231 @@
   firebase.initializeApp(firebaseConfig);
   const auth = firebase.auth();
 
-  const loginBox = document.getElementById("loginBox");
+  const ADMIN_EMAIL = "studiodepilatesaxis@gmail.com";
+  const ADMIN_PASSWORD = "11423296M";
+  const USERS_KEY = "axisManagedUsers";
+  const APP_INFO_KEY = "axisAppInfo";
+
+  const authGate = document.getElementById("authGate");
+  const appContent = document.getElementById("appContent");
   const appBox = document.getElementById("appBox");
   const adminBox = document.getElementById("adminBox");
   const userEmail = document.getElementById("userEmail");
+  const installBox = document.getElementById("installBox");
+  const btnInstall = document.getElementById("btnInstall");
+
+  const heroTitle = document.getElementById("heroTitle");
+  const heroDescription = document.getElementById("heroDescription");
+  const contactWhatsapp = document.getElementById("contactWhatsapp");
+
+  const newUserEmail = document.getElementById("newUserEmail");
+  const newUserPassword = document.getElementById("newUserPassword");
+  const btnCreateUser = document.getElementById("btnCreateUser");
+  const userList = document.getElementById("userList");
+
+  const appTitleInput = document.getElementById("appTitleInput");
+  const appDescInput = document.getElementById("appDescInput");
+  const appWhatsappInput = document.getElementById("appWhatsappInput");
+  const btnSaveAppInfo = document.getElementById("btnSaveAppInfo");
+
+  let deferredPrompt = null;
+
+  function loadUsers() {
+    return JSON.parse(localStorage.getItem(USERS_KEY) || "[]");
+  }
+
+  function saveUsers(users) {
+    localStorage.setItem(USERS_KEY, JSON.stringify(users));
+  }
+
+  function loadAppInfo() {
+    return JSON.parse(localStorage.getItem(APP_INFO_KEY) || "{}");
+  }
+
+  function saveAppInfo(payload) {
+    localStorage.setItem(APP_INFO_KEY, JSON.stringify(payload));
+  }
+
+  function applyAppInfo() {
+    const info = loadAppInfo();
+    if (info.title) heroTitle.innerText = info.title;
+    if (info.description) heroDescription.innerText = info.description;
+    if (info.whatsapp) contactWhatsapp.innerText = `WhatsApp: ${info.whatsapp}`;
+
+    appTitleInput.value = info.title || heroTitle.innerText;
+    appDescInput.value = info.description || heroDescription.innerText;
+    appWhatsappInput.value = info.whatsapp || contactWhatsapp.innerText.replace("WhatsApp: ", "");
+  }
+
+  function renderUserList() {
+    const users = loadUsers();
+    userList.innerHTML = "";
+
+    if (!users.length) {
+      userList.innerHTML = "<li>Nenhum cadastro criado pelo painel.</li>";
+      return;
+    }
+
+    users.forEach((u) => {
+      const li = document.createElement("li");
+      li.innerHTML = `<span>${u.email}</span><button class="danger-btn" data-email="${u.email}">Excluir</button>`;
+      userList.appendChild(li);
+    });
+  }
+
+  async function createWithSecondaryApp(email, password) {
+    const appName = `axis-create-${Date.now()}`;
+    const secondaryApp = firebase.initializeApp(firebaseConfig, appName);
+    try {
+      await secondaryApp.auth().createUserWithEmailAndPassword(email, password);
+    } finally {
+      await secondaryApp.delete();
+    }
+  }
+
+  async function deleteWithSecondaryApp(email, password) {
+    const appName = `axis-delete-${Date.now()}`;
+    const secondaryApp = firebase.initializeApp(firebaseConfig, appName);
+    try {
+      const creds = await secondaryApp.auth().signInWithEmailAndPassword(email, password);
+      await creds.user.delete();
+    } finally {
+      await secondaryApp.delete();
+    }
+  }
+
+  async function ensureAdminAccount() {
+    const seeded = localStorage.getItem("axisAdminSeeded") === "1";
+    if (seeded) return;
+
+    try {
+      await createWithSecondaryApp(ADMIN_EMAIL, ADMIN_PASSWORD);
+      localStorage.setItem("axisAdminSeeded", "1");
+    } catch (e) {
+      if (e.code === "auth/email-already-in-use") {
+        localStorage.setItem("axisAdminSeeded", "1");
+      }
+    }
+  }
+
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+      navigator.serviceWorker.register("./service-worker.js");
+      ensureAdminAccount();
+      applyAppInfo();
+      renderUserList();
+    });
+  }
+
+  window.addEventListener("beforeinstallprompt", (event) => {
+    event.preventDefault();
+    deferredPrompt = event;
+    installBox.classList.remove("hidden");
+  });
+
+  btnInstall.addEventListener("click", async () => {
+    if (!deferredPrompt) return;
+    deferredPrompt.prompt();
+    await deferredPrompt.userChoice;
+    deferredPrompt = null;
+    installBox.classList.add("hidden");
+  });
+
+  window.addEventListener("appinstalled", () => {
+    installBox.classList.add("hidden");
+  });
+
+  btnCreateUser.addEventListener("click", async () => {
+    const email = newUserEmail.value.trim();
+    const password = newUserPassword.value.trim();
+
+    if (!email || !password) {
+      alert("Preencha email e senha para criar login.");
+      return;
+    }
+
+    try {
+      await createWithSecondaryApp(email, password);
+      const users = loadUsers();
+      users.push({ email, password, createdAt: Date.now() });
+      saveUsers(users);
+      renderUserList();
+      newUserEmail.value = "";
+      newUserPassword.value = "";
+      alert("Login criado com sucesso.");
+    } catch (e) {
+      alert(e.message);
+    }
+  });
+
+  userList.addEventListener("click", async (event) => {
+    const target = event.target;
+    if (!target.matches("button[data-email]")) return;
+
+    const email = target.getAttribute("data-email");
+    const users = loadUsers();
+    const found = users.find((u) => u.email === email);
+
+    if (!found) return;
+
+    if (!confirm(`Deseja excluir o login ${email}?`)) return;
+
+    try {
+      await deleteWithSecondaryApp(found.email, found.password);
+      saveUsers(users.filter((u) => u.email !== email));
+      renderUserList();
+      alert("Login excluído com sucesso.");
+    } catch (e) {
+      alert(`Não foi possível excluir: ${e.message}`);
+    }
+  });
+
+  btnSaveAppInfo.addEventListener("click", () => {
+    const payload = {
+      title: appTitleInput.value.trim(),
+      description: appDescInput.value.trim(),
+      whatsapp: appWhatsappInput.value.trim()
+    };
+    saveAppInfo(payload);
+    applyAppInfo();
+    alert("Informações do aplicativo atualizadas.");
+  });
 
   document.getElementById("btnLogin").addEventListener("click", () => {
     auth.signInWithEmailAndPassword(email.value, senha.value)
-      .catch(e => alert(e.message));
+      .catch((e) => alert(e.message));
   });
 
   document.getElementById("btnCadastro").addEventListener("click", () => {
     auth.createUserWithEmailAndPassword(email.value, senha.value)
-      .catch(e => alert(e.message));
+      .catch((e) => alert(e.message));
   });
 
   document.getElementById("btnLogout").addEventListener("click", () => {
     auth.signOut();
   });
 
-  auth.onAuthStateChanged(u => {
+  auth.onAuthStateChanged((u) => {
     if (u) {
-      loginBox.classList.add("hidden");
+      authGate.classList.add("hidden");
+      appContent.classList.remove("hidden");
       appBox.classList.remove("hidden");
       userEmail.innerText = u.email;
 
-      if (u.email === "studiodepilatesaxis@gmail.com") {
+      if (u.email === ADMIN_EMAIL) {
         adminBox.classList.remove("hidden");
+        renderUserList();
+        applyAppInfo();
       } else {
         adminBox.classList.add("hidden");
       }
     } else {
-      loginBox.classList.remove("hidden");
+      authGate.classList.remove("hidden");
+      appContent.classList.add("hidden");
       appBox.classList.add("hidden");
       adminBox.classList.add("hidden");
     }
   });
 </script>
-
 </body>
 </html>
