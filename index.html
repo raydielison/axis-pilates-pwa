@@ -2,47 +2,110 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Teste Clique</title>
+  <title>Studio de Pilates Axis</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 
   <style>
     body {
-      font-family: Arial;
+      font-family: Arial, sans-serif;
       background: #f5f5f5;
     }
     .box {
       max-width: 400px;
-      margin: 100px auto;
+      margin: 80px auto;
       background: #fff;
       padding: 20px;
       border-radius: 8px;
-      text-align: center;
+    }
+    input, button {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      font-size: 16px;
     }
     button {
-      width: 100%;
-      padding: 12px;
-      font-size: 16px;
       background: #0b6f6b;
       color: #fff;
       border: none;
       cursor: pointer;
+    }
+    .hidden {
+      display: none;
     }
   </style>
 </head>
 
 <body>
 
-<div class="box">
-  <h2>Teste de Clique</h2>
-  <button id="testeBtn" type="button">CLIQUE AQUI</button>
+<div class="box" id="loginBox">
+  <h2>Login</h2>
+  <input id="email" type="email" placeholder="Email">
+  <input id="senha" type="password" placeholder="Senha">
+  <button id="btnLogin">Entrar</button>
+  <button id="btnCadastro">Criar conta</button>
+</div>
+
+<div class="box hidden" id="appBox">
+  <h2 id="userEmail"></h2>
+  <p>App Studio de Pilates Axis</p>
+  <button id="btnLogout">Sair</button>
+
+  <div id="adminBox" class="hidden">
+    <hr>
+    <strong>Área Administrador</strong>
+  </div>
 </div>
 
 <script>
-  // CONFIRMA QUE O JS CARREGOU
-  alert("JavaScript carregou corretamente");
+  const firebaseConfig = {
+    apiKey: "AIzaSyBBH9hTytHGsYctpQtAFvISB5EgXln39f8",
+    authDomain: "studio-pilates-axis.firebaseapp.com",
+    projectId: "studio-pilates-axis",
+    appId: "1:43458837871:web:ed8ddb7a5110d4f7043c9a"
+  };
 
-  document.getElementById("testeBtn").addEventListener("click", function () {
-    alert("BOTÃO FUNCIONANDO!");
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+
+  const loginBox = document.getElementById("loginBox");
+  const appBox = document.getElementById("appBox");
+  const adminBox = document.getElementById("adminBox");
+  const userEmail = document.getElementById("userEmail");
+
+  document.getElementById("btnLogin").addEventListener("click", () => {
+    auth.signInWithEmailAndPassword(email.value, senha.value)
+      .catch(e => alert(e.message));
+  });
+
+  document.getElementById("btnCadastro").addEventListener("click", () => {
+    auth.createUserWithEmailAndPassword(email.value, senha.value)
+      .catch(e => alert(e.message));
+  });
+
+  document.getElementById("btnLogout").addEventListener("click", () => {
+    auth.signOut();
+  });
+
+  auth.onAuthStateChanged(u => {
+    if (u) {
+      loginBox.classList.add("hidden");
+      appBox.classList.remove("hidden");
+      userEmail.innerText = u.email;
+
+      if (u.email === "studiodepilatesaxis@gmail.com") {
+        adminBox.classList.remove("hidden");
+      } else {
+        adminBox.classList.add("hidden");
+      }
+    } else {
+      loginBox.classList.remove("hidden");
+      appBox.classList.add("hidden");
+      adminBox.classList.add("hidden");
+    }
   });
 </script>
 
